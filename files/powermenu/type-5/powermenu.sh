@@ -27,12 +27,24 @@ next="󰒭"
 logout='󰍃'
 yes=''
 no=''
+msg=" Uptime: $uptime"
+lines=1
+
+# Récupérer le titre de la musique en cours
+player=$(playerctl metadata -f "{{artist}} - {{title}}" 2>/dev/null)
+
+# Vérifier si un lecteur est actif
+if [[ -n "$player" ]]; then
+  msg="$player"
+  lines=2
+fi
 
 # Rofi CMD
 rofi_cmd() {
   rofi -dmenu \
     -p " $USER@$host" \
-    -mesg " Uptime: $uptime" \
+    -mesg "$msg" \
+    -theme-str "listview {lines: $lines;}" \
     -theme ${dir}/${theme}.rasi
 }
 
@@ -68,12 +80,6 @@ run_cmd() {
       systemctl poweroff
     elif [[ $1 == '--reboot' ]]; then
       systemctl reboot
-    elif [[ $1 == '--hibernate' ]]; then
-      systemctl hibernate
-    elif [[ $1 == '--suspend' ]]; then
-      mpc -q pause
-      amixer set Master mute
-      # systemctl suspend
     elif [[ $1 == '--logout' ]]; then
       if [[ "$DESKTOP_SESSION" == 'openbox' ]]; then
         openbox --exit
@@ -83,6 +89,8 @@ run_cmd() {
         i3-msg exit
       elif [[ "$DESKTOP_SESSION" == 'plasma' ]]; then
         qdbus org.kde.ksmserver /KSMServer logout 0 0 0
+      elif [[ "$DESKTOP_SESSION" == 'chadwm' ]]; then
+        killall chadwm
       fi
     fi
   else
