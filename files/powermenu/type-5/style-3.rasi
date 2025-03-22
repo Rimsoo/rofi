@@ -35,7 +35,7 @@ window {
     fullscreen:                  false;
     width:                       300px;
     x-offset:                    -10px;
-    y-offset:                    50px;
+    y-offset:                    47px;
 
     padding:                     0px;
     border:                      0px solid;
@@ -60,7 +60,7 @@ mainbox {
 
 /*****----- Inputbar -----*****/
 inputbar {
-    enabled:                     true;
+    enabled:                     false;
     spacing:                     0px;
     padding:                     100px 40px;
     background-color:            transparent;

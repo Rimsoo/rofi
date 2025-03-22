@@ -19,11 +19,11 @@ uptime="$(uptime -p | sed -e 's/up //g')"
 host=$(hostname)
 
 # Options
-hibernate='󰏦'
 shutdown='⏻'
 reboot=''
-lock='󰐎'
-suspend='󰙧'
+prev='󰒮'
+playpause='󰐎'
+next="󰒭"
 logout='󰍃'
 yes=''
 no=''
@@ -57,7 +57,7 @@ confirm_exit() {
 
 # Pass variables to rofi dmenu
 run_rofi() {
-  echo -e "$lock\n$suspend\n$logout\n$hibernate\n$reboot\n$shutdown" | rofi_cmd
+  echo -e "$logout\n$prev\n$reboot\n$playpause\n$shutdown\n$next" | rofi_cmd
 }
 
 # Execute Command
@@ -99,20 +99,16 @@ $shutdown)
 $reboot)
   run_cmd --reboot
   ;;
-$hibernate)
-  run_cmd --hibernate
-  ;;
-$lock)
-  if [[ -x '/usr/bin/betterlockscreen' ]]; then
-    betterlockscreen -l
-  elif [[ -x '/usr/bin/i3lock' ]]; then
-    i3lock
-  fi
-  ;;
-$suspend)
-  run_cmd --suspend
-  ;;
 $logout)
   run_cmd --logout
+  ;;
+$prev)
+  playerctl previous
+  ;;
+$playpause)
+  playerctl play-pause
+  ;;
+$next)
+  playerctl next
   ;;
 esac
