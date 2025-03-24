@@ -29,6 +29,7 @@ yes=''
 no=''
 msg=" Uptime: $uptime"
 lines=1
+powermenu="$shutdown\n$reboot\n$logout"
 
 # Récupérer le titre de la musique en cours
 player=$(playerctl metadata -f "{{artist}} - {{title}}" 2>/dev/null)
@@ -37,6 +38,7 @@ player=$(playerctl metadata -f "{{artist}} - {{title}}" 2>/dev/null)
 if [[ -n "$player" ]]; then
   msg="$player"
   lines=2
+  powermenu="$logout\n$prev\n$reboot\n$playpause\n$shutdown\n$next"
 fi
 
 # Rofi CMD
@@ -69,7 +71,7 @@ confirm_exit() {
 
 # Pass variables to rofi dmenu
 run_rofi() {
-  echo -e "$logout\n$prev\n$reboot\n$playpause\n$shutdown\n$next" | rofi_cmd
+  echo -e $powermenu | rofi_cmd
 }
 
 # Execute Command
